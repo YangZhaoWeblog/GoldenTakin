@@ -22,8 +22,8 @@ type AppLoggerOptions struct {
 	AppName   string   // 应用名称
 	MinLevel  LogLevel // 最小日志级别
 
-	FileLogOption FileLogOption // 往文件写入的配置
-	//DBOption      DBLogOption      // 往 DB 落盘配置
+	FileLogOption *FileLogOption // 往文件写入的配置
+	//DBOption      *DBLogOption      // 往 DB 落盘配置
 }
 
 // 定义应用日志接口

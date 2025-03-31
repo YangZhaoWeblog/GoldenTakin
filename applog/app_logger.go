@@ -5,7 +5,6 @@ import (
 	"io"
 	"log/slog"
 	"os"
-	"time"
 )
 
 /*
@@ -35,13 +34,21 @@ func NewAppLogger(opts AppLoggerOptions) *AppLogger {
 	var writers []io.Writer
 
 	writers = append(writers, os.Stdout)
-	// TODO: 创建 FileOption并返回
+
+	// 绑定 FileOutput, 确保 log 能输出到文件
 	if opts.FileLogOption != nil {
-		writers = append(writers, opts.Outputs...)
+		fileOutput := NewFileOutput(opts.FileLogOption)
+		writers = append(writers, fileOutput)
 	}
 
-	// 创建自定义处理程序
-	handler := NewDBHandler(writers)
+	// 创建多输出writer
+	multiWriter := io.MultiWriter(writers...)
+
+	// 临时使用标准的JSON handler替代自定义handler
+	handler := slog.NewJSONHandler(multiWriter, &slog.HandlerOptions{
+		Level: slog.LevelDebug, // 设置最低日志级别为Debug
+	})
+
 	return &AppLogger{
 		component:  opts.Component,
 		appName:    opts.AppName,
@@ -55,7 +62,7 @@ func (l *AppLogger) commonAttrs() []any {
 	return []any{
 		"component", l.component,
 		"app_name", l.appName,
-		"time", time.Now(),
+		//"time", time.Now(),
 	}
 }
 

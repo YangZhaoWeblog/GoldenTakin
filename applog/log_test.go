@@ -1,15 +1,23 @@
 package applog
 
-func main() {
-	// 配置 AppLoggerOptions
+import (
+	"testing"
+)
+
+// 测试 NewAppLoggerWithKratos 功能
+func TestNewAppLoggerWithKratos(t *testing.T) {
+	// 创建 AppLoggerOptions
 	opts := AppLoggerOptions{
-		Level:  "info",
-		Format: "json",
+		Component: "test-component",
+		AppName:   "test-app",
 	}
 
 	// 创建 AppLogger
-	logger := applog.NewAppLoggerWithKratos(opts)
+	logger := NewAppLoggerWithKratos(opts)
 
-	// ... 使用 logger ...
-	logger.Info("Server started")
+	// 输出不同级别的日志
+	logger.Debug("这是一条Debug日志")
+	logger.Info("这是一条Info日志")
+	logger.Warn("这是一条Warn日志")
+	logger.Error("这是一条Error日志")
 }
