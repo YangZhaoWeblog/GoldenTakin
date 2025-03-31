@@ -25,34 +25,27 @@ type AppLogger struct {
 	// 如：- 控制台输出（开发环境）- 文件输出（生产环境）- 数据库存储（错误落盘）
 	Outputs []io.Writer // 多个输出，优先级高于单个Output
 
-	// 是内部实际使用的日志记录器, 利用 Go 1.21+ 标准库 slog 提供的结构化日志能力
+	// 内部实际使用的日志记录器
 	slogLogger *slog.Logger
 }
 
 // 创建新的应用日志记录器
 func NewAppLogger(opts AppLoggerOptions) *AppLogger {
+	// 默认使用控制台输出, 同时添加外部注入的输出(如文件输出)
 	var writers []io.Writer
 
-	// 默认使用控制台输出
 	writers = append(writers, os.Stdout)
-
-	// 添加外部注入的输出(如文件输出)
 	if opts.Outputs != nil {
 		writers = append(writers, opts.Outputs...)
 	}
 
 	// 创建自定义处理程序
-	//handler := NewMultiOutputHandler(writers)
-
-	// 创建 slog 记录器
-	//slogLogger := slog.New(handler)
-	slogLogger := slog.New()
-
+	handler := NewDBHandler(writers)
 	return &AppLogger{
 		component:  opts.Component,
 		appName:    opts.AppName,
 		Outputs:    writers,
-		slogLogger: slogLogger,
+		slogLogger: slog.New(handler),
 	}
 }
 
