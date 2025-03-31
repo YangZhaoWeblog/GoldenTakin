@@ -3,8 +3,6 @@
 package applog
 
 import (
-	"io"
-
 	"github.com/go-kratos/kratos/v2/log"
 )
 
@@ -22,14 +20,7 @@ import (
 */
 
 // 创建应用日志系统的核心组件，并配置 Kratos 日志适配
-func NewAppLoggerWithKratos(options AppLoggerOptions, option FileLogOption) *AppLogger {
-	// 创建文件输出并添加到选项中
-	if options.Outputs == nil {
-		options.Outputs = []io.Writer{fileOutput}
-	} else {
-		options.Outputs = append(options.Outputs, fileOutput)
-	}
-
+func NewAppLoggerWithKratos(options AppLoggerOptions) *AppLogger {
 	// 创建应用日志记录器
 	appLogger := NewAppLogger(options)
 

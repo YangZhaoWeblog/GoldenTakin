@@ -35,7 +35,10 @@ func NewAppLogger(opts AppLoggerOptions) *AppLogger {
 	var writers []io.Writer
 
 	writers = append(writers, os.Stdout)
-	//writers = append(writers, opts.Outputs...)
+	// TODO: 创建 FileOption并返回
+	if opts.FileLogOption != nil {
+		writers = append(writers, opts.Outputs...)
+	}
 
 	// 创建自定义处理程序
 	handler := NewDBHandler(writers)
