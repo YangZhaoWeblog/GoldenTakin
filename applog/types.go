@@ -3,7 +3,6 @@ package applog
 import (
 	"context"
 	"fmt"
-	"io"
 	"log/slog"
 )
 
@@ -19,16 +18,12 @@ const (
 )
 
 type AppLoggerOptions struct {
-	Component string      // 组件名称
-	AppName   string      // 应用名称
-	MinLevel  LogLevel    // 最小日志级别
-	Outputs   []io.Writer // 日志输出目标
-}
+	Component string   // 组件名称
+	AppName   string   // 应用名称
+	MinLevel  LogLevel // 最小日志级别
 
-// 定义日志输出接口
-type LogOutput interface {
-	Write(ctx context.Context, level LogLevel, msg string, attrs ...slog.Attr) error
-	Close() error
+	FileLogOption FileLogOption // 往文件写入的配置
+	//DBOption      DBLogOption      // 往 DB 落盘配置
 }
 
 // 定义应用日志接口

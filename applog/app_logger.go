@@ -35,9 +35,7 @@ func NewAppLogger(opts AppLoggerOptions) *AppLogger {
 	var writers []io.Writer
 
 	writers = append(writers, os.Stdout)
-	if opts.Outputs != nil {
-		writers = append(writers, opts.Outputs...)
-	}
+	//writers = append(writers, opts.Outputs...)
 
 	// 创建自定义处理程序
 	handler := NewDBHandler(writers)
