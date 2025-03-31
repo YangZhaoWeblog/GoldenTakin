@@ -1,11 +1,12 @@
 package applog
 
 import (
+	"gopkg.in/natefinch/lumberjack.v2"
 	"io"
 )
 
 // 文件日志配置
-type FileLogConfig struct {
+type FileLogOption struct {
 	Filename   string // 日志文件路径
 	MaxSize    int    // 每个日志文件最大尺寸，单位为MB
 	MaxBackups int    // 保留的旧日志文件最大数量
@@ -16,7 +17,7 @@ type FileLogConfig struct {
 
 // 创建一个基于lumberjack的文件输出
 // 可以将返回的writer注入到AppLoggerConfig.Output中
-func NewFileOutput(config *FileLogConfig) io.Writer {
+func NewFileOutput(config *FileLogOption) io.Writer {
 	if config == nil {
 		return nil
 	}
@@ -32,8 +33,8 @@ func NewFileOutput(config *FileLogConfig) io.Writer {
 }
 
 // 返回默认的文件日志配置
-func DefaultFileLogConfig(filename string) *FileLogConfig {
-	return &FileLogConfig{
+func DefaultFileLogConfig(filename string) *FileLogOption {
+	return &FileLogOption{
 		Filename:   filename,
 		MaxSize:    100,  // 100MB
 		MaxBackups: 10,   // 保留10个备份
