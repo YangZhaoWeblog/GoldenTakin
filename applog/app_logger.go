@@ -80,43 +80,52 @@ func (l *AppLogger) addTraceInfo(ctx context.Context, attrs []any) []any {
 	return attrs
 }
 
+// 将 普通参数 类型转换为 slog参数 的形式
+func slogAttrsFromAny(args []any) []any {
+	// slog 只能接受偶数个参数，所以额外添加一个
+	if len(args)%2 != 0 {
+		args = append(args, "MISSING_VALUE")
+	}
+	return args
+}
+
 func (l *AppLogger) Debug(msg string, args ...any) {
-	attrs := append(l.commonAttrs(), args...)
+	attrs := append(l.commonAttrs(), slogAttrsFromAny(args)...)
 	l.slogLogger.Debug(msg, attrs...)
 }
 
 func (l *AppLogger) DebugContext(ctx context.Context, msg string, args ...any) {
-	attrs := l.addTraceInfo(ctx, append(l.commonAttrs(), args...))
+	attrs := l.addTraceInfo(ctx, append(l.commonAttrs(), slogAttrsFromAny(args)...))
 	l.slogLogger.DebugContext(ctx, msg, attrs...)
 }
 
 func (l *AppLogger) Info(msg string, args ...any) {
-	attrs := append(l.commonAttrs(), args...)
+	attrs := append(l.commonAttrs(), slogAttrsFromAny(args)...)
 	l.slogLogger.Info(msg, attrs...)
 }
 
 func (l *AppLogger) InfoContext(ctx context.Context, msg string, args ...any) {
-	attrs := l.addTraceInfo(ctx, append(l.commonAttrs(), args...))
+	attrs := l.addTraceInfo(ctx, append(l.commonAttrs(), slogAttrsFromAny(args)...))
 	l.slogLogger.InfoContext(ctx, msg, attrs...)
 }
 
 func (l *AppLogger) Warn(msg string, args ...any) {
-	attrs := append(l.commonAttrs(), args...)
+	attrs := append(l.commonAttrs(), slogAttrsFromAny(args)...)
 	l.slogLogger.Warn(msg, attrs...)
 }
 
 func (l *AppLogger) WarnContext(ctx context.Context, msg string, args ...any) {
-	attrs := l.addTraceInfo(ctx, append(l.commonAttrs(), args...))
+	attrs := l.addTraceInfo(ctx, append(l.commonAttrs(), slogAttrsFromAny(args)...))
 	l.slogLogger.WarnContext(ctx, msg, attrs...)
 }
 
 func (l *AppLogger) Error(msg string, args ...any) {
-	attrs := append(l.commonAttrs(), args...)
+	attrs := append(l.commonAttrs(), slogAttrsFromAny(args)...)
 	l.slogLogger.Error(msg, attrs...)
 }
 
 func (l *AppLogger) ErrorContext(ctx context.Context, msg string, args ...any) {
-	attrs := l.addTraceInfo(ctx, append(l.commonAttrs(), args...))
+	attrs := l.addTraceInfo(ctx, append(l.commonAttrs(), slogAttrsFromAny(args)...))
 	l.slogLogger.ErrorContext(ctx, msg, attrs...)
 }
 
