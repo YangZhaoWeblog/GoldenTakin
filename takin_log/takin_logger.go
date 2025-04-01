@@ -31,7 +31,7 @@ type TakinLogger struct {
 	slogLogger *slog.Logger
 }
 
-// NewAppLogger 创建一个新的应用日志记录器，支持多输出目标
+// 创建一个新的应用日志记录器，支持多输出目标
 func NewAppLogger(opts AppLoggerOptions) *TakinLogger {
 	// 初始化输出目标集合
 	writers := []io.Writer{
