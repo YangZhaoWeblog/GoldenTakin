@@ -31,15 +31,3 @@ func NewFileOutput(config *FileLogOption) io.Writer {
 		LocalTime:  config.LocalTime,
 	}
 }
-
-// 返回默认的文件日志配置
-func DefaultFileLogConfig(filename string) *FileLogOption {
-	return &FileLogOption{
-		Filename:   filename,
-		MaxSize:    100,  // 100MB
-		MaxBackups: 10,   // 保留10个备份
-		MaxAge:     30,   // 保留30天
-		Compress:   true, // 压缩旧日志
-		LocalTime:  true, // 使用本地时间
-	}
-}

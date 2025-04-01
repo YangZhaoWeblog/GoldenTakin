@@ -10,6 +10,7 @@ func TestNewAppLoggerWithKratos(t *testing.T) {
 	opts := AppLoggerOptions{
 		Component: "test-component",
 		AppName:   "test-app",
+		MinLevel:  DebugLevel,
 	}
 
 	// 创建 AppLogger
