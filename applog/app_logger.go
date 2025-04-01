@@ -47,10 +47,10 @@ func NewAppLogger(opts AppLoggerOptions) *AppLogger {
 	// 创建多输出writer
 	multiWriter := io.MultiWriter(writers...)
 
-	// 如果未指定最低日志级别，默认为Debug级别
+	// 如果未指定最低日志级别，默认为 Info 级别
 	minLevel := opts.MinLevel
 	if minLevel == 0 {
-		minLevel = DebugLevel
+		minLevel = InfoLevel
 	}
 
 	// 创建JSON handler并设置最低日志级别
