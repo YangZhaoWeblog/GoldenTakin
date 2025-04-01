@@ -1,13 +1,14 @@
 package takin_log
 
 import (
-	"gopkg.in/natefinch/lumberjack.v2"
 	"io"
+
+	"gopkg.in/natefinch/lumberjack.v2"
 )
 
 // 文件日志配置
 type FileLogOption struct {
-	Filename   string // 日志文件路径
+	FilePath   string // 日志文件路径
 	MaxSize    int    // 每个日志文件最大尺寸，单位为MB
 	MaxBackups int    // 保留的旧日志文件最大数量
 	MaxAge     int    // 保留的旧日志文件最大寿命，单位为天
@@ -18,16 +19,27 @@ type FileLogOption struct {
 // 创建一个基于lumberjack的文件输出
 // 可以将返回的writer注入到AppLoggerConfig.Output中
 func NewFileOutput(config *FileLogOption) io.Writer {
-	if config == nil {
-		return nil
+	// 提供默认值
+	maxSize := config.MaxSize
+	if maxSize <= 0 {
+		maxSize = 100 // 默认100MB
+	}
+
+	maxBackups := config.MaxBackups
+	if maxBackups <= 0 {
+		maxBackups = 3 // 默认3个备份
+	}
+
+	MaxAge := config.MaxAge
+	if MaxAge <= 0 {
+		MaxAge = 7 // 默认保留 7 天
 	}
 
 	return &lumberjack.Logger{
-		Filename:   config.Filename,
-		MaxSize:    config.MaxSize,
-		MaxBackups: config.MaxBackups,
-		MaxAge:     config.MaxAge,
+		Filename:   config.FilePath,
+		MaxSize:    maxSize,
+		MaxBackups: maxBackups,
+		MaxAge:     MaxAge,
 		Compress:   config.Compress,
-		LocalTime:  config.LocalTime,
 	}
 }

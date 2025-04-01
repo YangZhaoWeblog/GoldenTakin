@@ -44,6 +44,12 @@ func NewAppLogger(opts AppLoggerOptions) *TakinLogger {
 		writers = append(writers, opts.Outputs...)
 	}
 
+	// 处理文件日志配置 - 开箱即用模式
+	if opts.FileLogOption != nil && opts.FileLogOption.FilePath != "" {
+		fileOutput := NewFileOutput(opts.FileLogOption)
+		writers = append(writers, fileOutput)
+	}
+
 	// 创建多输出writer
 	multiWriter := io.MultiWriter(writers...)
 
