@@ -36,12 +36,12 @@ func NewAppLogger(opts AppLoggerOptions) *AppLogger {
 	// 默认使用控制台输出, 同时添加外部注入的输出(如文件输出)
 	var writers []io.Writer
 
+	// 始终添加控制台输出
 	writers = append(writers, os.Stdout)
 
-	// 绑定 FileOutput, 确保 log 能输出到文件
-	if opts.FileLogOption != nil {
-		fileOutput := NewFileOutput(opts.FileLogOption)
-		writers = append(writers, fileOutput)
+	// 添加外部注入的输出
+	if len(opts.Outputs) > 0 {
+		writers = append(writers, opts.Outputs...)
 	}
 
 	// 创建多输出writer

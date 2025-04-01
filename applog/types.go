@@ -2,6 +2,7 @@ package applog
 
 import (
 	"context"
+	"io"
 	"log/slog"
 )
 
@@ -20,6 +21,8 @@ type AppLoggerOptions struct {
 	Component string   // 组件名称
 	AppName   string   // 应用名称
 	MinLevel  LogLevel // 最小日志级别
+
+	Outputs []io.Writer // 日志输出目标列表，支持同时输出到多个目标
 
 	FileLogOption *FileLogOption // 往文件写入的配置
 	//DBOption      *DBLogOption      // 往 DB 落盘配置
