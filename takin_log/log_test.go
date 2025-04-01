@@ -8,8 +8,7 @@ import (
 )
 
 func TestNewAppLoggerWithKratos(t *testing.T) {
-
-	fileOutput, err := NewFileOutput(&FileLogOption{
+	fileOutput := NewFileOutput(&FileLogOption{
 		FilePath:   "./app.log", // 日志文件路径
 		MaxSize:    100,         // 每个日志文件最大尺寸，单位为MB
 		MaxBackups: 3,           // 保留的旧日志文件最大数量
@@ -17,9 +16,6 @@ func TestNewAppLoggerWithKratos(t *testing.T) {
 		Compress:   true,        // 压缩旧日志文件
 		LocalTime:  true,        // 使用本地时间
 	})
-	if err != nil {
-		t.Fatalf("创建文件日志输出失败: %v", err)
-	}
 
 	opts := AppLoggerOptions{
 		Component: "test-component",
@@ -46,7 +42,7 @@ func TestNewAppLoggerWithKratos(t *testing.T) {
 	kratosLogger.Log(log.LevelInfo, "kratos消息", "key", "value")
 
 	// 关闭日志输出
-	err = logger.Close()
+	err := logger.Close()
 	if err != nil {
 		t.Error(err)
 	}

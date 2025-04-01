@@ -31,39 +31,39 @@ type TakinLogger struct {
 	slogLogger *slog.Logger
 }
 
-// 创建新的应用日志记录器
+// NewAppLogger 创建一个新的应用日志记录器，支持多输出目标
 func NewAppLogger(opts AppLoggerOptions) *TakinLogger {
-	// 默认使用控制台输出, 同时添加外部注入的输出(如文件输出)
-	var writers []io.Writer
-
-	// 始终添加控制台输出
-	writers = append(writers, os.Stdout)
-
-	// 添加外部注入的输出
-	if len(opts.Outputs) > 0 {
-		writers = append(writers, opts.Outputs...)
+	// 初始化输出目标集合
+	writers := []io.Writer{
+		os.Stdout, // 默认总是包含控制台输出
 	}
 
-	// 处理文件日志配置 - 开箱即用模式
+	// 添加文件输出（如果配置了文件路径）
 	if opts.FileLogOption != nil && opts.FileLogOption.FilePath != "" {
 		fileOutput := NewFileOutput(opts.FileLogOption)
 		writers = append(writers, fileOutput)
 	}
 
-	// 创建多输出writer
-	multiWriter := io.MultiWriter(writers...)
+	// 添加外部自定义输出
+	if len(opts.Outputs) > 0 {
+		writers = append(writers, opts.Outputs...)
+	}
 
-	// 如果未指定最低日志级别，默认为 Info 级别
+	// 确定最低日志级别，默认为 Info
 	minLevel := opts.MinLevel
 	if minLevel == 0 {
 		minLevel = InfoLevel
 	}
 
-	// 创建JSON handler并设置最低日志级别
+	// 创建多目标输出writer
+	multiWriter := io.MultiWriter(writers...)
+
+	// 创建JSON格式日志处理器
 	handler := slog.NewJSONHandler(multiWriter, &slog.HandlerOptions{
-		Level: minLevel, // 使用配置的最低日志级别
+		Level: minLevel,
 	})
 
+	// 构造并返回日志记录器实例
 	return &TakinLogger{
 		component:  opts.Component,
 		appName:    opts.AppName,
