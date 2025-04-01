@@ -1,11 +1,10 @@
-module github.com/JoeTikTok/Joe-pkg
+module github.com/YangZhaoWeblog/GoldenTakin
 
-go 1.22.5
+go 1.22.0
+
+require github.com/go-kratos/kratos/v2 v2.8.4
 
 require (
-	github.com/go-kratos/kratos/v2 v2.8.4
-	github.com/go-sql-driver/mysql v1.7.1
-	github.com/google/wire v0.6.0
+	golang.org/x/sync v0.6.0 // indirect
+	gopkg.in/natefinch/lumberjack.v2 v2.2.1
 )
-
-require gopkg.in/natefinch/lumberjack.v2 v2.2.1 // indirect
