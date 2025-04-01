@@ -20,6 +20,9 @@ type AppLogger struct {
 	// 例如: tiktok, tiktok-admin
 	appName string
 
+	// 表示该条日志的最低级别, 低于该级别的日志不会输出
+	minLevel LogLevel
+
 	// 定义日志输出目标列表, 支持同时输出到多个目标
 	// 如：- 控制台输出（开发环境）- 文件输出（生产环境）- 数据库存储（错误落盘）
 	Outputs []io.Writer // 多个输出，优先级高于单个Output
@@ -44,15 +47,22 @@ func NewAppLogger(opts AppLoggerOptions) *AppLogger {
 	// 创建多输出writer
 	multiWriter := io.MultiWriter(writers...)
 
-	// 临时使用标准的JSON handler替代自定义handler
+	// 如果未指定最低日志级别，默认为Debug级别
+	minLevel := opts.MinLevel
+	if minLevel == 0 {
+		minLevel = DebugLevel
+	}
+
+	// 创建JSON handler并设置最低日志级别
 	handler := slog.NewJSONHandler(multiWriter, &slog.HandlerOptions{
-		Level: slog.LevelDebug, // 设置最低日志级别为Debug
+		Level: minLevel, // 使用配置的最低日志级别
 	})
 
 	return &AppLogger{
 		component:  opts.Component,
 		appName:    opts.AppName,
 		Outputs:    writers,
+		minLevel:   minLevel,
 		slogLogger: slog.New(handler),
 	}
 }
