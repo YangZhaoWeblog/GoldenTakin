@@ -1,4 +1,4 @@
-package applog
+package takin_log
 
 import (
 	"io"
@@ -21,11 +21,12 @@ func TestNewAppLoggerWithKratos(t *testing.T) {
 	opts := AppLoggerOptions{
 		Component: "test-component",
 		AppName:   "test-app",
-		MinLevel:  InfoLevel,
-		Outputs:   []io.Writer{fileOutput}, // 注入文件输出
+		//MinLevel:  InfoLevel,
+		MinLevel: DebugLevel,
+		Outputs:  []io.Writer{fileOutput}, // 注入文件输出
 	}
 
-	// 创建 AppLogger
+	// 创建 TakinLogger
 	logger := NewAppLoggerWithKratos(opts)
 
 	// 测试基本日志输出

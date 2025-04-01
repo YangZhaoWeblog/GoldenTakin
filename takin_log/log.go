@@ -1,6 +1,6 @@
 // internal/log/log.go
 
-package applog
+package takin_log
 
 import (
 	"github.com/go-kratos/kratos/v2/log"
@@ -12,7 +12,7 @@ import (
 			而 applogger 是对 slog 的封装，支持更复杂的操作
 		2. kratos Adapter:  将 kratos log 最终转化为 Applogger 的输出(这么做是为了，框架内部可能有地方使用的是 kratos log, 此时要保证 kratos log 使用的是 Applogger 的输出)
 			日志流向：
-				业务代码 → AppLogger → slog → 多个输出目标（文件、控制台、数据库）
+				业务代码 → TakinLogger → slog → 多个输出目标（文件、控制台、数据库）
 					↑
 				Kratos框架 → Kratos log → KratosAdapter
 	qs:
@@ -20,7 +20,7 @@ import (
 */
 
 // 创建应用日志系统的核心组件，并配置 Kratos 日志适配
-func NewAppLoggerWithKratos(options AppLoggerOptions) *AppLogger {
+func NewAppLoggerWithKratos(options AppLoggerOptions) *TakinLogger {
 	// 创建应用日志记录器
 	appLogger := NewAppLogger(options)
 

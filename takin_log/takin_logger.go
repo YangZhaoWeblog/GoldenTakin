@@ -1,4 +1,4 @@
-package applog
+package takin_log
 
 import (
 	"context"
@@ -11,7 +11,7 @@ import (
 		提供应用级日志功能
 	 	内部封装 slog 作为底层写入 log，以替代 kratos log 不支持 InfoContext 等高级特性的缺陷
 */
-type AppLogger struct {
+type TakinLogger struct {
 	// 标识日志来源的组件或服务名称, 在微服务架构中用于快速定位日志来源
 	// 例如: user-service, video-service
 	component string
@@ -32,7 +32,7 @@ type AppLogger struct {
 }
 
 // 创建新的应用日志记录器
-func NewAppLogger(opts AppLoggerOptions) *AppLogger {
+func NewAppLogger(opts AppLoggerOptions) *TakinLogger {
 	// 默认使用控制台输出, 同时添加外部注入的输出(如文件输出)
 	var writers []io.Writer
 
@@ -58,7 +58,7 @@ func NewAppLogger(opts AppLoggerOptions) *AppLogger {
 		Level: minLevel, // 使用配置的最低日志级别
 	})
 
-	return &AppLogger{
+	return &TakinLogger{
 		component:  opts.Component,
 		appName:    opts.AppName,
 		Outputs:    writers,
@@ -68,7 +68,7 @@ func NewAppLogger(opts AppLoggerOptions) *AppLogger {
 }
 
 // 构建通用属性
-func (l *AppLogger) commonAttrs() []any {
+func (l *TakinLogger) commonAttrs() []any {
 	return []any{
 		"component", l.component,
 		"app_name", l.appName,
@@ -77,7 +77,7 @@ func (l *AppLogger) commonAttrs() []any {
 }
 
 // 添加跟踪信息到日志属性中
-func (l *AppLogger) addTraceInfo(ctx context.Context, attrs []any) []any {
+func (l *TakinLogger) addTraceInfo(ctx context.Context, attrs []any) []any {
 	if traceID := ctx.Value("trace_id"); traceID != nil {
 		attrs = append(attrs, "trace_id", traceID)
 	}
@@ -99,48 +99,48 @@ func slogAttrsFromAny(args []any) []any {
 	return args
 }
 
-func (l *AppLogger) Debug(msg string, args ...any) {
+func (l *TakinLogger) Debug(msg string, args ...any) {
 	attrs := append(l.commonAttrs(), slogAttrsFromAny(args)...)
 	l.slogLogger.Debug(msg, attrs...)
 }
 
-func (l *AppLogger) DebugContext(ctx context.Context, msg string, args ...any) {
+func (l *TakinLogger) DebugContext(ctx context.Context, msg string, args ...any) {
 	attrs := l.addTraceInfo(ctx, append(l.commonAttrs(), slogAttrsFromAny(args)...))
 	l.slogLogger.DebugContext(ctx, msg, attrs...)
 }
 
-func (l *AppLogger) Info(msg string, args ...any) {
+func (l *TakinLogger) Info(msg string, args ...any) {
 	attrs := append(l.commonAttrs(), slogAttrsFromAny(args)...)
 	l.slogLogger.Info(msg, attrs...)
 }
 
-func (l *AppLogger) InfoContext(ctx context.Context, msg string, args ...any) {
+func (l *TakinLogger) InfoContext(ctx context.Context, msg string, args ...any) {
 	attrs := l.addTraceInfo(ctx, append(l.commonAttrs(), slogAttrsFromAny(args)...))
 	l.slogLogger.InfoContext(ctx, msg, attrs...)
 }
 
-func (l *AppLogger) Warn(msg string, args ...any) {
+func (l *TakinLogger) Warn(msg string, args ...any) {
 	attrs := append(l.commonAttrs(), slogAttrsFromAny(args)...)
 	l.slogLogger.Warn(msg, attrs...)
 }
 
-func (l *AppLogger) WarnContext(ctx context.Context, msg string, args ...any) {
+func (l *TakinLogger) WarnContext(ctx context.Context, msg string, args ...any) {
 	attrs := l.addTraceInfo(ctx, append(l.commonAttrs(), slogAttrsFromAny(args)...))
 	l.slogLogger.WarnContext(ctx, msg, attrs...)
 }
 
-func (l *AppLogger) Error(msg string, args ...any) {
+func (l *TakinLogger) Error(msg string, args ...any) {
 	attrs := append(l.commonAttrs(), slogAttrsFromAny(args)...)
 	l.slogLogger.Error(msg, attrs...)
 }
 
-func (l *AppLogger) ErrorContext(ctx context.Context, msg string, args ...any) {
+func (l *TakinLogger) ErrorContext(ctx context.Context, msg string, args ...any) {
 	attrs := l.addTraceInfo(ctx, append(l.commonAttrs(), slogAttrsFromAny(args)...))
 	l.slogLogger.ErrorContext(ctx, msg, attrs...)
 }
 
 // 关闭所有日志输出
-func (l *AppLogger) Close() error {
+func (l *TakinLogger) Close() error {
 	var lastErr error
 	for _, output := range l.Outputs {
 		// 检查是否支持关闭操作

@@ -1,4 +1,4 @@
-package applog
+package takin_log
 
 import (
 	"github.com/go-kratos/kratos/v2/log"
@@ -9,10 +9,10 @@ import (
 	 	kratos 可设置 kratosAdapter
 */
 type KratosAdapter struct {
-	logger *AppLogger
+	logger *TakinLogger
 }
 
-func NewKratosAdapter(logger *AppLogger) *KratosAdapter {
+func NewKratosAdapter(logger *TakinLogger) *KratosAdapter {
 	return &KratosAdapter{logger: logger}
 }
 
@@ -38,7 +38,7 @@ func (a *KratosAdapter) Log(level log.Level, keyvals ...interface{}) error {
 	// 将剩余的 keyvals 视为属性
 	attrs = append(attrs, keyvals...)
 
-	// 根据 Kratos 日志级别调用相应的 AppLogger 方法
+	// 根据 Kratos 日志级别调用相应的 TakinLogger 方法
 	// 循环拆解 key, values 的责任下推到 Applogger 来执行
 	switch level {
 	case log.LevelDebug:

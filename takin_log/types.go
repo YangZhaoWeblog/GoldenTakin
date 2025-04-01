@@ -1,4 +1,4 @@
-package applog
+package takin_log
 
 import (
 	"context"
