@@ -10,12 +10,12 @@ import (
 func TestNewAppLoggerWithKratos(t *testing.T) {
 
 	fileOutput := NewFileOutput(&FileLogOption{
-		Filename:   "logs/app.log", // 日志文件路径
-		MaxSize:    100,            // 每个日志文件最大尺寸，单位为MB
-		MaxBackups: 3,              // 保留的旧日志文件最大数量
-		MaxAge:     7,              // 保留的旧日志文件最大寿命，单位为天
-		Compress:   true,           // 压缩旧日志文件
-		LocalTime:  true,           // 使用本地时间
+		Filename:   "./app.log", // 日志文件路径
+		MaxSize:    100,         // 每个日志文件最大尺寸，单位为MB
+		MaxBackups: 3,           // 保留的旧日志文件最大数量
+		MaxAge:     7,           // 保留的旧日志文件最大寿命，单位为天
+		Compress:   true,        // 压缩旧日志文件
+		LocalTime:  true,        // 使用本地时间
 	})
 
 	opts := AppLoggerOptions{
