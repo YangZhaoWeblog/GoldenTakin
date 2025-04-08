@@ -26,10 +26,9 @@ type AppLoggerOptions struct {
 	Outputs []io.Writer // 日志输出目标列表，支持同时输出到多个目标
 
 	FileLogOption *outputer.FileLogOption // 往文件写入的配置
-	//DBOption      *DBLogOption      // 往 DB 落盘配置
 }
 
-// 定义应用日志接口
+// 定义应用日志接口, 一组行为
 type Logger interface {
 	Debug(msg string, args ...any)
 	DebugContext(ctx context.Context, msg string, args ...any)
