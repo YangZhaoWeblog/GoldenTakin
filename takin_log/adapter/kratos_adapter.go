@@ -1,6 +1,7 @@
-package takin_log
+package adapter
 
 import (
+	"github.com/YangZhaoWeblog/GoldenTakin/takin_log"
 	"github.com/go-kratos/kratos/v2/log"
 )
 
@@ -9,10 +10,10 @@ import (
 	 	kratos 可设置 kratosAdapter
 */
 type KratosAdapter struct {
-	logger *TakinLogger
+	logger *takin_log.TakinLogger
 }
 
-func NewKratosAdapter(logger *TakinLogger) *KratosAdapter {
+func NewKratosAdapter(logger *takin_log.TakinLogger) *KratosAdapter {
 	return &KratosAdapter{logger: logger}
 }
 

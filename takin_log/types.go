@@ -2,6 +2,7 @@ package takin_log
 
 import (
 	"context"
+	"github.com/YangZhaoWeblog/GoldenTakin/takin_log/outputer"
 	"io"
 	"log/slog"
 )
@@ -24,7 +25,7 @@ type AppLoggerOptions struct {
 
 	Outputs []io.Writer // 日志输出目标列表，支持同时输出到多个目标
 
-	FileLogOption *FileLogOption // 往文件写入的配置
+	FileLogOption *outputer.FileLogOption // 往文件写入的配置
 	//DBOption      *DBLogOption      // 往 DB 落盘配置
 }
 

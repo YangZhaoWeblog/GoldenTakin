@@ -1,4 +1,4 @@
-package takin_log
+package outputer
 
 import (
 	"io"

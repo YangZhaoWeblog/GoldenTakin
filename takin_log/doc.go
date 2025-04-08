@@ -2,10 +2,6 @@
 
 package takin_log
 
-import (
-	"github.com/go-kratos/kratos/v2/log"
-)
-
 /*
 	日志系统：
 		1. Applogger: 本项目统一使用自定义的 Applogger 来记录日志，而非使用 kratos log(由于 kratos log 不支持 InfoConext 等操作)
@@ -18,17 +14,3 @@ import (
 	qs:
 		1. 为何不使用 kratos helper? helper 是对 kratos logger 的简单封装，但是依然不支持 InfoContext 以及 结构化日志 等高级用法
 */
-
-// 创建应用日志系统的核心组件，并配置 Kratos 日志适配
-func NewAppLoggerWithKratos(options AppLoggerOptions) *TakinLogger {
-	// 创建应用日志记录器
-	appLogger := NewAppLogger(options)
-
-	// 创建 Kratos 适配器
-	kratosLogger := NewKratosAdapter(appLogger)
-
-	// 设置 Kratos 全局日志记录器
-	log.SetLogger(kratosLogger)
-
-	return appLogger
-}

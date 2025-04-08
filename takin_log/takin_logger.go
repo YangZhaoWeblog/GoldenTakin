@@ -5,6 +5,8 @@ import (
 	"io"
 	"log/slog"
 	"os"
+
+	"github.com/YangZhaoWeblog/GoldenTakin/takin_log/outputer"
 )
 
 /*
@@ -40,7 +42,7 @@ func NewAppLogger(opts AppLoggerOptions) *TakinLogger {
 
 	// 添加文件输出（如果配置了文件路径）
 	if opts.FileLogOption != nil && opts.FileLogOption.FilePath != "" {
-		fileOutput := NewFileOutput(opts.FileLogOption)
+		fileOutput := outputer.NewFileOutput(opts.FileLogOption)
 		writers = append(writers, fileOutput)
 	}
 

@@ -1,14 +1,13 @@
 package takin_log
 
 import (
+	"github.com/YangZhaoWeblog/GoldenTakin/takin_log/outputer"
 	"io"
 	"testing"
-
-	"github.com/go-kratos/kratos/v2/log"
 )
 
-func TestNewAppLoggerWithKratos(t *testing.T) {
-	fileOutput := NewFileOutput(&FileLogOption{
+func TestAppLogger(t *testing.T) {
+	fileOutput := outputer.NewFileOutput(&outputer.FileLogOption{
 		FilePath:   "./app.log", // 日志文件路径
 		MaxSize:    100,         // 每个日志文件最大尺寸，单位为MB
 		MaxBackups: 3,           // 保留的旧日志文件最大数量
@@ -26,37 +25,27 @@ func TestNewAppLoggerWithKratos(t *testing.T) {
 	}
 
 	// 创建 TakinLogger
-	logger := NewAppLoggerWithKratos(opts)
+	takinLogger := NewAppLogger(opts)
 
 	// 测试基本日志输出
-	logger.Debug("这是一条Debug日志")
-	logger.Info("这是一条Info日志", "key1", "value1")
-	logger.Warn("这是一条Warn日志")
-	logger.Error("这是一条Error日志")
+	takinLogger.Debug("这是一条Debug日志")
+	takinLogger.Info("这是一条Info日志", "key1", "value1")
+	takinLogger.Warn("这是一条Warn日志")
+	takinLogger.Error("这是一条Error日志")
 
 	// 测试奇数个参数
-	logger.Info("奇数参数测试", "key1", "value1", "key2")
-
-	// 测试 Kratos logger
-	kratosLogger := log.GetLogger()
-	kratosLogger.Log(log.LevelInfo, "kratos消息", "key", "value")
-
-	// 关闭日志输出
-	err := logger.Close()
-	if err != nil {
-		t.Error(err)
-	}
+	takinLogger.Info("奇数参数测试", "key1", "value1", "key2")
 }
 
-// 测试使用内置FileLogOption的开箱即用方式
-func TestNewAppLoggerWithFileOption(t *testing.T) {
+// // 测试使用内置FileLogOption的开箱即用方式
+func TestAppLoggerWithFileOption(t *testing.T) {
 	// 使用开箱即用方式配置文件日志
 	opts := AppLoggerOptions{
 		Component: "test-component",
 		AppName:   "test-app-builtin",
 		MinLevel:  DebugLevel,
 		// 直接使用FileLogOption，无需手动创建fileOutput
-		FileLogOption: &FileLogOption{
+		FileLogOption: &outputer.FileLogOption{
 			FilePath:   "./app_builtin.log",
 			MaxSize:    100,
 			MaxBackups: 3,
@@ -67,16 +56,17 @@ func TestNewAppLoggerWithFileOption(t *testing.T) {
 	}
 
 	// 创建 TakinLogger
-	logger := NewAppLoggerWithKratos(opts)
+	takinLogger := NewAppLogger(opts)
 
 	// 测试日志输出
-	logger.Debug("内置FileLogOption方式 - Debug日志")
-	logger.Info("内置FileLogOption方式 - Info日志", "key1", "value1")
-	logger.Warn("内置FileLogOption方式 - Warn日志")
-	logger.Error("内置FileLogOption方式 - Error日志")
+	takinLogger.Debug("内置FileLogOption方式 - Debug日志")
+	takinLogger.Info("内置FileLogOption方式 - Info日志", "key1", "value1")
+	takinLogger.Warn("内置FileLogOption方式 - Warn日志")
+	takinLogger.Error("内置FileLogOption方式 - Error日志")
+	takinLogger.Info("奇数参数测试", "key1", "value1", "key2")
 
 	// 关闭日志输出
-	err := logger.Close()
+	err := takinLogger.Close()
 	if err != nil {
 		t.Error(err)
 	}
