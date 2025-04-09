@@ -13,7 +13,7 @@ func TestAppLogger(t *testing.T) {
 		MaxBackups: 3,           // 保留的旧日志文件最大数量
 		MaxAge:     7,           // 保留的旧日志文件最大寿命，单位为天
 		Compress:   true,        // 压缩旧日志文件
-		LocalTime:  true,        // 使用本地时间
+		//LocalTime:  true,        // 使用本地时间
 	})
 
 	opts := TakinLoggerOptions{
@@ -51,7 +51,7 @@ func TestAppLoggerWithFileOption(t *testing.T) {
 			MaxBackups: 3,
 			MaxAge:     7,
 			Compress:   true,
-			LocalTime:  true,
+			//LocalTime:  true,
 		},
 	}
 
