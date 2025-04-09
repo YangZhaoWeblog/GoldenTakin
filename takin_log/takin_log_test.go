@@ -16,7 +16,7 @@ func TestAppLogger(t *testing.T) {
 		LocalTime:  true,        // 使用本地时间
 	})
 
-	opts := AppLoggerOptions{
+	opts := TakinLoggerOptions{
 		Component: "test-component",
 		AppName:   "test-app",
 		//MinLevel:  InfoLevel,
@@ -25,7 +25,7 @@ func TestAppLogger(t *testing.T) {
 	}
 
 	// 创建 TakinLogger
-	takinLogger := NewAppLogger(opts)
+	takinLogger := NewTakinLogger(opts)
 
 	// 测试基本日志输出
 	takinLogger.Debug("这是一条Debug日志")
@@ -40,7 +40,7 @@ func TestAppLogger(t *testing.T) {
 // // 测试使用内置FileLogOption的开箱即用方式
 func TestAppLoggerWithFileOption(t *testing.T) {
 	// 使用开箱即用方式配置文件日志
-	opts := AppLoggerOptions{
+	opts := TakinLoggerOptions{
 		Component: "test-component",
 		AppName:   "test-app-builtin",
 		MinLevel:  DebugLevel,
@@ -56,7 +56,7 @@ func TestAppLoggerWithFileOption(t *testing.T) {
 	}
 
 	// 创建 TakinLogger
-	takinLogger := NewAppLogger(opts)
+	takinLogger := NewTakinLogger(opts)
 
 	// 测试日志输出
 	takinLogger.Debug("内置FileLogOption方式 - Debug日志")

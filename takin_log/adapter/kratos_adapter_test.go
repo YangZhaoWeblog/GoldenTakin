@@ -9,7 +9,7 @@ import (
 
 func TestKratosAdapter(t *testing.T) {
 	// 1. 创建 TakinLogger
-	takinLogger := takin_log.NewAppLogger(takin_log.AppLoggerOptions{
+	takinLogger := takin_log.NewTakinLogger(takin_log.TakinLoggerOptions{
 		Component: "test-KratosAdapter-to-takinLog",
 		AppName:   "test-KratosAdapter-to-takinLog",
 		MinLevel:  takin_log.DebugLevel,

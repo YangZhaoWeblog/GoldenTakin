@@ -18,7 +18,7 @@ const (
 	FatalLevel = slog.LevelError + 4 // slog 没有 Fatal 级别，我们自定义一个
 )
 
-type AppLoggerOptions struct {
+type TakinLoggerOptions struct {
 	Component string   // 组件名称
 	AppName   string   // 应用名称
 	MinLevel  LogLevel // 最小日志级别

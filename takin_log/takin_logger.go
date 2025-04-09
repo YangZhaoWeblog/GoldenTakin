@@ -34,7 +34,7 @@ type TakinLogger struct {
 }
 
 // 创建一个新的应用日志记录器，支持多输出目标
-func NewAppLogger(opts AppLoggerOptions) *TakinLogger {
+func NewTakinLogger(opts TakinLoggerOptions) *TakinLogger {
 	// 初始化输出目标集合
 	writers := []io.Writer{
 		os.Stdout, // 默认总是包含控制台输出
