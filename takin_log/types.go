@@ -2,9 +2,12 @@ package takin_log
 
 import (
 	"context"
-	"github.com/YangZhaoWeblog/GoldenTakin/takin_log/outputer"
+	"fmt"
 	"io"
 	"log/slog"
+	"strings"
+
+	"github.com/YangZhaoWeblog/GoldenTakin/takin_log/outputer"
 )
 
 // 日志级别类型
@@ -17,6 +20,26 @@ const (
 	ErrorLevel = slog.LevelError
 	FatalLevel = slog.LevelError + 4 // slog 没有 Fatal 级别，我们自定义一个
 )
+
+// ParseLogLevel 将字符串转换为LogLevel类型
+// 支持的字符串格式：debug, info, warn, error, fatal（不区分大小写）
+// 如果传入的字符串无法识别，返回默认级别(InfoLevel)和错误
+func ParseLogLevel(levelStr string) (LogLevel, error) {
+	switch strings.ToLower(strings.TrimSpace(levelStr)) {
+	case "debug":
+		return DebugLevel, nil
+	case "info":
+		return InfoLevel, nil
+	case "warn", "warning":
+		return WarnLevel, nil
+	case "error", "err":
+		return ErrorLevel, nil
+	case "fatal":
+		return FatalLevel, nil
+	default:
+		return InfoLevel, fmt.Errorf("unknown log level: %s, using default level: info", levelStr)
+	}
+}
 
 type TakinLoggerOptions struct {
 	Component string   // 组件名称
