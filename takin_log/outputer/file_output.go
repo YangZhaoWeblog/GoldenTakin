@@ -13,7 +13,7 @@ type FileLogOption struct {
 	MaxBackups int    // 保留的旧日志文件最大数量
 	MaxAge     int    // 保留的旧日志文件最大寿命，单位为天
 	Compress   bool   // 是否压缩旧日志文件
-	LocalTime  bool   // 是否使用本地时间而非UTC时间
+	//LocalTime  bool   // 是否使用本地时间而非UTC时间
 }
 
 // 创建一个基于lumberjack的文件输出
