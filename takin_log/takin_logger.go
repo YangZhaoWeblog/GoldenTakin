@@ -102,7 +102,7 @@ func (l *TakinLogger) addTraceInfo(ctx context.Context, attrs []any) []any {
 func slogAttrsFromAny(args []any) []any {
 	// slog 只能接受偶数个参数，所以额外添加一个
 	if len(args)%2 != 0 {
-		args = append(args, "MISSING_VALUE")
+		args = append(args, "!MISSING_VALUE")
 	}
 	return args
 }
