@@ -90,14 +90,10 @@ func (l *TakinLogger) addTraceInfo(ctx context.Context, attrs []any) []any {
 	// 从 OTel SpanContext 提取追踪信息
 	sc := trace.SpanContextFromContext(ctx)
 	if sc.HasTraceID() {
-		attrs = append(attrs, "traceID", sc.TraceID().String())
-		attrs = append(attrs, "spanID", sc.SpanID().String())
+		attrs = append(attrs, "trace_id", sc.TraceID().String())
+		attrs = append(attrs, "span_id", sc.SpanID().String())
 	}
 
-	// 保留原有的上下文提取逻辑作为备选
-	if traceID := ctx.Value("trace_id"); traceID != nil {
-		attrs = append(attrs, "trace_id", traceID)
-	}
 	if userID := ctx.Value("user_id"); userID != nil {
 		attrs = append(attrs, "user_id", userID)
 	}
