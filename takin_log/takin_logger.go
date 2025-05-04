@@ -2,6 +2,7 @@ package takin_log
 
 import (
 	"context"
+	"go.opentelemetry.io/otel/trace"
 	"io"
 	"log/slog"
 	"os"
@@ -40,7 +41,7 @@ func NewTakinLogger(opts TakinLoggerOptions) *TakinLogger {
 		os.Stdout, // 默认总是包含控制台输出
 	}
 
-	// 添加文件输出（如果配置了文件路径）
+	// 添加文件输出（如果配置了文件路径）, 云原生不推荐写入文件到日志
 	if opts.FileLogOption != nil && opts.FileLogOption.FilePath != "" {
 		fileOutput := outputer.NewFileOutput(opts.FileLogOption)
 		writers = append(writers, fileOutput)
@@ -86,11 +87,16 @@ func (l *TakinLogger) commonAttrs() []any {
 
 // 添加跟踪信息到日志属性中
 func (l *TakinLogger) addTraceInfo(ctx context.Context, attrs []any) []any {
+	// 从 OTel SpanContext 提取追踪信息
+	sc := trace.SpanContextFromContext(ctx)
+	if sc.HasTraceID() {
+		attrs = append(attrs, "traceID", sc.TraceID().String())
+		attrs = append(attrs, "spanID", sc.SpanID().String())
+	}
+
+	// 保留原有的上下文提取逻辑作为备选
 	if traceID := ctx.Value("trace_id"); traceID != nil {
 		attrs = append(attrs, "trace_id", traceID)
-	}
-	if spanID := ctx.Value("span_id"); spanID != nil {
-		attrs = append(attrs, "span_id", spanID)
 	}
 	if userID := ctx.Value("user_id"); userID != nil {
 		attrs = append(attrs, "user_id", userID)
